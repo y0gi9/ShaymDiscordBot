@@ -1,0 +1,4 @@
+*.Zone.Identifier
+.env
+.playwright-mcp/
+node_modules/
