@@ -56,7 +56,12 @@ class StatsBot {
                     }
 
                     const stats = await this.scraper.getPlayerStats(user.steamId);
-                    const newNickname = this.scraper.formatNickname(user.nickname, stats);
+                    const formatOptions = {
+                        showFaceitInfo: user.showFaceitInfo,
+                        showFaceitElo: user.showFaceitElo,
+                        showPremierInfo: user.showPremierInfo
+                    };
+                    const newNickname = this.scraper.formatNickname(user.nickname, stats, formatOptions);
                     const currentNickname = member.nickname || member.displayName;
 
                     console.log(`Current nickname: "${currentNickname}"`);

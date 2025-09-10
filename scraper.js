@@ -118,21 +118,42 @@ class CSWatchScraper {
         }
     }
 
-    formatNickname(nickname, stats) {
+    formatNickname(nickname, stats, options = {}) {
         if (!stats) {
             return `${nickname} - Stats N/A`;
         }
 
-        const faceitLevel = stats.faceitLevel || 'N/A';
-        const faceitElo = stats.faceitElo || 'N/A';
-        const premierRank = stats.premierRank || 'N/A';
+        const { showFaceitInfo = true, showFaceitElo = true, showPremierInfo = true } = options;
         
-        // Shortened format to fit Discord 32 char limit
-        const formattedName = `${nickname}[Lvl${faceitLevel}-${faceitElo}Elo][Prem${premierRank}]`;
+        let formattedName = nickname;
+        const parts = [];
+        
+        // Add Faceit info if enabled
+        if (showFaceitInfo && (stats.faceitLevel || stats.faceitElo)) {
+            let faceitPart = '';
+            if (stats.faceitLevel) {
+                faceitPart += `Lvl${stats.faceitLevel}`;
+            }
+            if (showFaceitElo && stats.faceitElo) {
+                faceitPart += (faceitPart ? '-' : '') + `${stats.faceitElo}Elo`;
+            }
+            if (faceitPart) {
+                parts.push(faceitPart);
+            }
+        }
+        
+        // Add Premier info if enabled
+        if (showPremierInfo && stats.premierRank) {
+            parts.push(`Prem${stats.premierRank}`);
+        }
+        
+        // Combine parts
+        if (parts.length > 0) {
+            formattedName += `[${parts.join('][')}]`;
+        }
         
         // Ensure it doesn't exceed 32 characters
         if (formattedName.length > 32) {
-            // Truncate if still too long
             return formattedName.substring(0, 32);
         }
         

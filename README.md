@@ -1,12 +1,14 @@
 # Discord CS2 FACEIT & PREMIER BOT
 
-A Discord bot that automatically updates user nicknames with their gaming statistics from CSWatch.in. The bot displays FACEIT level, ELO, and CS2 Premier rank in the format: `Nickname - LVL# #### - Premier #####`
+A Discord bot that automatically updates user nicknames with their gaming statistics from CSWatch.in. The bot displays FACEIT level, ELO, and CS2 Premier rank with fully configurable display options.
 
 ## Features
 
 - Automatically scrapes gaming stats from cswatch.in
 - Updates Discord nicknames with FACEIT level, ELO, and CS2 Premier rank
+- Fully configurable display options (show/hide any combination of stats)
 - Supports multiple users with individual Steam IDs
+- Per-user configuration overrides
 - Configurable update intervals
 - Handles missing data gracefully
 - Rate limiting to avoid being blocked
@@ -38,6 +40,11 @@ cp .env.example .env
 DISCORD_BOT_TOKEN=your_discord_bot_token_here
 GUILD_ID=your_discord_server_id_here
 
+# Global display settings (defaults for all users)
+SHOW_FACEIT_INFO=true
+SHOW_FACEIT_ELO=true
+SHOW_PREMIER_INFO=true
+
 USER_1_DISCORD_ID=123456789012345678
 USER_1_STEAM_ID=123456789012345678
 USER_1_NICKNAME=ShyaM
@@ -45,6 +52,8 @@ USER_1_NICKNAME=ShyaM
 USER_2_DISCORD_ID=123456789012345678
 USER_2_STEAM_ID=123456789012345678
 USER_2_NICKNAME=PlayerTwo
+# Optional: Override global settings for this user
+USER_2_SHOW_FACEIT_ELO=false
 
 UPDATE_INTERVAL_MINUTES=30
 ```
@@ -64,12 +73,25 @@ npm start
 
 ## Configuration Options
 
+### Basic Settings
 - `DISCORD_BOT_TOKEN`: Your Discord bot token
 - `GUILD_ID`: The Discord server ID where the bot will operate
+- `UPDATE_INTERVAL_MINUTES`: How often to update nicknames (default: 30 minutes)
+
+### Global Display Settings
+- `SHOW_FACEIT_INFO`: Show FACEIT level/ELO section (default: true)
+- `SHOW_FACEIT_ELO`: Show ELO number when FACEIT info is enabled (default: true)
+- `SHOW_PREMIER_INFO`: Show CS2 Premier rank (default: true)
+
+### User Configuration
 - `USER_X_DISCORD_ID`: Discord user ID for each user
 - `USER_X_STEAM_ID`: Steam ID for each user (found in their Steam profile URL)
 - `USER_X_NICKNAME`: Preferred nickname base for each user
-- `UPDATE_INTERVAL_MINUTES`: How often to update nicknames (default: 30 minutes)
+
+### Per-User Overrides (Optional)
+- `USER_X_SHOW_FACEIT_INFO`: Override global FACEIT info setting for this user
+- `USER_X_SHOW_FACEIT_ELO`: Override global FACEIT ELO setting for this user
+- `USER_X_SHOW_PREMIER_INFO`: Override global Premier info setting for this user
 
 ## Getting Steam IDs
 
@@ -79,9 +101,23 @@ To find a Steam ID:
 
 ## Example Output
 
-The bot will format nicknames like:
-- `ShyaM - LVL9 1796 - Premier 22767`
-- `PlayerTwo - LVL7 1245 - Premier 18234`
+The bot will format nicknames based on your configuration:
+
+### All stats enabled (default):
+- `ShyaM[Lvl9-1796Elo][Prem22767]`
+- `PlayerTwo[Lvl7-1245Elo][Prem18234]`
+
+### FACEIT level only (no ELO):
+- `ShyaM[Lvl9][Prem22767]`
+
+### Premier only:
+- `ShyaM[Prem22767]`
+
+### FACEIT only (level + ELO):
+- `ShyaM[Lvl9-1796Elo]`
+
+### No stats:
+- `ShyaM`
 
 ## Troubleshooting
 
