@@ -1,4 +1,4 @@
-# Discord Gaming Stats Bot
+# Discord CS2 FACEIT & PREMIER BOT
 
 A Discord bot that automatically updates user nicknames with their gaming statistics from CSWatch.in. The bot displays FACEIT level, ELO, and CS2 Premier rank in the format: `Nickname - LVL# #### - Premier #####`
 
